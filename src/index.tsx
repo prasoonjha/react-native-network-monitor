@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
 
 const LINKING_ERROR =
   `The package 'react-native-network-monitor' doesn't seem to be linked. Make sure: \n\n` +
@@ -19,4 +19,23 @@ const NetworkMonitor = NativeModules.NetworkMonitor
 
 export function multiply(a: number, b: number): Promise<number> {
   return NetworkMonitor.multiply(a, b);
+}
+
+export const DEVICE_CONNECTIVITY_EVENT = 'networkStatusDidChange';
+
+/**
+ * A React Hook which updates when the connection state changes.
+ *
+ * @returns The connection state.
+ */
+
+export function reachable(): Promise<boolean> {
+  return NetworkMonitor.isNetworkReachable();
+}
+
+export const networkSubscription = new NativeEventEmitter(NetworkMonitor);
+
+export enum NetworkStatus {
+  CONNECTED = 'connected',
+  DISCONNECTED = 'disconnected',
 }

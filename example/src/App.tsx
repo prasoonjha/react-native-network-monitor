@@ -1,13 +1,19 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-network-monitor';
+import { StyleSheet, View, Text, Alert } from 'react-native';
+import { multiply, reachable } from 'react-native-network-monitor';
 
 export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
 
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    // reachable().then((res: boolean) => {
+    //   console.log('res', res);
+    // });
+    multiply(3, 3).then(setResult);
+    reachable().then((res) =>
+      Alert.alert('network reachable', res ? 'reachable' : 'unreachable')
+    );
   }, []);
 
   return (
